@@ -1,0 +1,65 @@
+﻿.card {
+    width: 70%; /* Kart genişliği */
+    margin: auto; /* Kartı ortalamak için */
+    min-height: 200px; /* Minimum yükseklik */
+    background-color: #fff; /* Arka plan rengi */
+    border-radius: 10px; /* Kenar yuvarlatma */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Gölgeleme */
+    padding: 20px; /* İçerik ve kart kenarı arası boşluk */
+    margin-bottom: 20px; /* Kartlar arası boşluk */
+}
+
+.btn-customdonate {
+    background-color: #28A745;
+    color: white;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-customdonate:hover {
+        background-color: #218838;
+        color: white;
+    }
+
+.publish-date {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.card-title {
+    text-align: center;
+}
+
+.donate-title {
+    color: darkred;
+    transition: color 0.3s ease;
+}
+
+    .donate-title:hover {
+        color: red;
+    }
+
+.organization-name {
+    color: darkred;
+    transition: color 0.3s ease;
+}
+
+    .organization-name:hover {
+        color: red;
+    }
+
+.page-link {
+    color: darkred;
+    transition: color 0.3s ease;
+}
+
+    .page-link:hover {
+        color: red;
+    }
+
+.card-details {
+    max-width: 350px;
+}

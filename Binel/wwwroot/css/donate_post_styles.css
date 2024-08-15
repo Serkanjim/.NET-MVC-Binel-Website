@@ -1,0 +1,44 @@
+﻿/* donate_post_styles.css */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8f9fa;
+}
+
+h1.display-4 {
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.lead {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.img-fluid {
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.donate-slider {
+    width: 200px; /* Slider genişliğini 200px olarak ayarladık */
+    margin-top: 10px;
+}
+
+.btn {
+    font-size: 1.25rem;
+    padding: 10px 20px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}

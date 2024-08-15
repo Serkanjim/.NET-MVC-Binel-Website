@@ -1,0 +1,135 @@
+﻿@model Binel.Models.DonatePost
+@{
+    Layout = "_Layout1";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Model.Title</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/donate_post_styles.css">
+    <link rel="stylesheet" href="~/css/styles.css">
+    <style>
+        .btn-customdonate {
+            background-color: #28A745;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-customdonate:hover {
+                background-color: #218838;
+                color: white;
+            }
+
+        .card-custom {
+            margin-top: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .img-fluid-custom {
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .donate-amount {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .donate-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .donate-header {
+            margin-bottom: 30px;
+        }
+
+            .donate-header h1 {
+                font-size: 2.5rem;
+                color: darkred;
+            }
+
+            .donate-header p {
+                font-size: 1.2rem;
+                color: #666;
+            }
+
+        .donate-images {
+            margin-top: 30px;
+        }
+
+        .donate-form {
+            margin-top: 30px;
+        }
+
+        .alert-danger {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="donate-container text-center">
+            <div class="donate-header">
+                <h1 class="display-4">@Model.Title</h1>
+                <p class="lead">@Model.DonateText</p>
+                <p>Toplam Bağış: <strong>@Model.TotalDonate</strong></p>
+            </div>
+
+            <div class="row donate-images">
+                @foreach (var file in Model.Files)
+                {
+                    <div class="col-md-4 mb-4">
+                        <img src="@file.FileUrl1" alt="Media" class="img-fluid img-fluid-custom" />
+                    </div>
+                }
+            </div>
+
+            <div class="donate-form">
+                <form method="post" action="/Organization/Donate" class="d-flex flex-column align-items-center">
+                    <input type="hidden" name="id" value="@Model.DonateId" />
+
+                    <div class="form-group donate-amount">
+                        <label for="donateAmount">Bağış Miktarı:</label>
+                        <input type="number" id="donateAmount" name="donateAmount" class="form-control" />
+                    </div>
+
+                    <div class="form-group donate-amount">
+                        <label for="donateSlider">Bağış Miktarını Ayarla:</label>
+                        <input type="range" id="donateSlider" name="donateSlider" min="@Model.MinLimit" max="@Model.MaxLimit" value="@Model.MinLimit" class="form-control-range" oninput="updateDonateInput(this.value)">
+                    </div>
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                    }
+
+                    <button type="submit" class="btn btn-customdonate btn-lg">Bağış Yap</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateDonateInput(value) {
+            document.getElementById('donateAmount').value = value;
+        }
+    </script>
+
+    <script src="~/js/jquery-3.6.0.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
+</body>
+</html>

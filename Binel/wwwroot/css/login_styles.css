@@ -1,0 +1,64 @@
+﻿body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.logo {
+    margin-right: 50px;
+}
+
+    .logo img {
+        max-width: 100%;
+        height: auto;
+    }
+
+.welcome-text {
+    text-align: center;
+}
+
+    .welcome-text h1, .welcome-text h2, .welcome-text h3 {
+        margin: 0;
+    }
+
+.form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+    .form-container h4 {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.btn-outline-secondary {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

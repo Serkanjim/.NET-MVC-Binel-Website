@@ -1,0 +1,36 @@
+﻿@model List<Binel.Models.DonatePost>
+
+<link rel="stylesheet" href="~/css/filtered_posts_styles.css" />
+
+@if (Model != null && Model.Any())
+{
+    @foreach (var post in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="/@post.Organization.OrganizationTitle.ToLower()/donatepost?id=@post.DonateId" class="donate-title">@post.Title</a>
+                </h5>
+                <a href="/@post.Organization.OrganizationTitle.ToLower()/donatepost?id=@post.DonateId" class="btn btn-customdonate">Bağış Yap</a>
+                <p class="card-details">@post.DonateText</p>
+                <div class="publish-date">
+                    <p class="card-details">
+                        Tarih: @(post.PublishDate.HasValue ? post.PublishDate.Value.ToString("dd/MM/yyyy") : "Tarih bilinmiyor")
+                    </p>
+                </div>
+                <p class="card-details">Organizasyon: <a href="/@post.Organization.OrganizationTitle.ToLower()" class="organization-name">@post.Organization.OrganizationName</a></p>
+                <p class="card-details">
+                    Kategoriler:
+                    @foreach (var category in post.Categories)
+                    {
+                        <span>@category.CategoryName</span>
+                    }
+                </p>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p>Sonuç bulunamadı.</p>
+}

@@ -1,0 +1,100 @@
+﻿@model Binel.ViewModels.LoginViewModel
+@{
+    Layout = "_Layout1";
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Sayfası</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/styles.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container d-flex justify-content-between align-items-center min-vh-100">
+        <!-- Logo -->
+        <div class="logo">
+            <img src="~/images/Union.png" alt="Your Logo">
+        </div>
+        <div>
+            <!-- Hoş Geldiniz Başlığı -->
+            <div class="welcome-text">
+                <h1>Şu an neler dönüyor?<br></h1>
+                <h2>Yardımlaşmanın yeri</h2>
+                <h3>Binel'a Hoş Geldiniz</h3>
+            </div>
+
+            <!-- Giriş Formu -->
+            <div class="mt-3">
+                <form asp-action="Login" asp-controller="Users" method="post" id="login-form">
+                    <div class="form-group">
+                        <label asp-for="Email">Email</label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password">Şifre</label>
+                        <div class="input-group">
+                            <input asp-for="Password" type="password" class="form-control" id="password" />
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fas fa-eye"></i><span id="passwordToggleText">Şifreyi göster</span>
+                                </button>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <br>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                        <div class="mt-2">
+                            <button id="forgotPasswordButton" class="btn btn-link">Şifremi Unuttum</button>
+                        </div>
+                    </div>
+                    <div> @TempData["Message"]</div>
+                </form>
+                <h4>Kaydınız yok mu? Hemen oluşturalım!</h4>
+                <div class="d-flex justify-content-center">
+                    <button id="registerButton" class="btn btn-block transparent-button">Kayıt Ol</button>
+                </div>
+                <p id="error-message1" class="error-message text-danger"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/jquery-3.6.0.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Toggle password visibility
+            $('#togglePassword').click(function () {
+                const passwordInput = $('input[name="Password"]'); // Correct selector for ASP.NET Core
+                const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+                passwordInput.attr('type', type);
+                $(this).find('i').toggleClass('fa-eye fa-eye-slash');
+
+                // Change button text based on password visibility
+                const buttonText = $('#passwordToggleText');
+                if (type === 'text') {
+                    buttonText.text('Şifreyi gizle');
+                } else {
+                    buttonText.text('Şifreyi göster');
+                }
+            });
+
+            // Redirect to register page when register button is clicked
+            $('#registerButton').click(function () {
+                window.location.href = '@Url.Action("Register", "Users")';
+            });
+        });
+    </script>
+</body>
+</html>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

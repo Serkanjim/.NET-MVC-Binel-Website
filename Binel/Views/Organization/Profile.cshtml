@@ -1,0 +1,151 @@
+﻿@model Binel.Models.Organization
+@{
+    Layout = "_Layout1";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Model.OrganizationName</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/profile_styles.css">
+    <link rel="stylesheet" href="~/css/styles.css">
+    <style>
+        .organization-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+            .organization-header h1 {
+                font-size: 3rem;
+                margin-bottom: 20px;
+            }
+
+            .organization-header p {
+                font-size: 1.2rem;
+                color: #666;
+                text-align: center; /* Biyografi metnini ortala */
+                margin: 0 auto;
+                max-width: 80%;
+            }
+
+        .donate-posts, .posts {
+            margin-bottom: 50px;
+        }
+
+        .donate-post-card, .post-card {
+            background: #f9f9f9; /* Kartların arka plan rengini değiştir */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 48%;
+            margin: 1%;
+            position: relative;
+        }
+
+            .donate-post-card:hover, .post-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            }
+
+        .post-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        .post-content {
+            padding: 20px;
+        }
+
+            .post-content h3 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+                text-align: center;
+                color: darkred; /* Başlangıçta başlık rengi */
+                transition: color 0.3s ease;
+            }
+
+                .post-content h3 a {
+                    text-decoration: none;
+                    color: darkred; /* Başlangıçta başlık rengi */
+                    transition: color 0.3s ease;
+                }
+
+                    .post-content h3 a:hover {
+                        color: red; /* Hover durumunda başlık rengi */
+                    }
+
+            .post-content p {
+                font-size: 1rem;
+                color: #333;
+            }
+
+        .text-center {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="organization-header text-center">
+            <h1>@Model.OrganizationName</h1>
+            <p>@Model.Biography</p>
+        </div>
+
+        <h2 class="text-center">Bağış Postları</h2>
+        <div class="row justify-content-center">
+            @foreach (var donatePost in Model.DonatePosts)
+            {
+                <div class="donate-post-card d-flex flex-column mb-4">
+                    <div class="post-image mb-3">
+                        @foreach (var file in donatePost.Files)
+                        {
+                            <img src="@file.FileUrl1" alt="Media" class="img-thumbnail" />
+                        }
+                    </div>
+                    <div class="post-content">
+                        <h3>
+                            <a asp-action="DonatePost" asp-controller="Organization" asp-route-id="@donatePost.DonateId" asp-route-organizationTitle="@Model.OrganizationTitle">
+                                @donatePost.Title
+                            </a>
+                        </h3>
+                        <p>@donatePost.DonateText</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <h2 class="text-center">Postlar</h2>
+        <div class="row justify-content-center">
+            @foreach (var post in Model.Posts)
+            {
+                <div class="post-card d-flex flex-column mb-4">
+                    <div class="post-image mb-3">
+                        @foreach (var file in post.Files)
+                        {
+                            <img src="@file.FileUrl1" alt="Media" class="img-thumbnail" />
+                        }
+                    </div>
+                    <div class="post-content">
+                        <h3>
+                            <a asp-action="Post" asp-controller="Organization" asp-route-id="@post.PostId" asp-route-organizationTitle="@Model.OrganizationTitle">
+                                @post.Title
+                            </a>
+                        </h3>
+                        <p>@post.PostText</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="~/js/jquery-3.6.0.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
+</body>
+</html>

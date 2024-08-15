@@ -1,0 +1,119 @@
+@model Binel.Models.DonateCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_Layout1";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Bağış Postu Ekle</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/styles.css">
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="card-title">Yeni Bağış Postu Ekle</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        @if (ViewBag.OrganizationName != null)
+                        {
+                            <div class="form-group">
+                                <label asp-for="OrganizationId" class="control-label">Organizasyon</label>
+                                <input type="text" value="@ViewBag.OrganizationName" class="form-control" readonly />
+                                <input type="hidden" asp-for="OrganizationId" value="@ViewBag.OrganizationId" />
+                            </div>
+                        }
+
+                        <div class="form-group">
+                            <label asp-for="Title" class="control-label">Başlık</label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="DonateText" class="control-label">Bağış Metni</label>
+                            <textarea asp-for="DonateText" class="form-control"></textarea>
+                            <span asp-validation-for="DonateText" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="TotalDonate" class="control-label">Toplam Bağış</label>
+                            <input asp-for="TotalDonate" class="form-control" />
+                            <span asp-validation-for="TotalDonate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="MaxLimit" class="control-label">Maksimum Limit</label>
+                            <input asp-for="MaxLimit" class="form-control" />
+                            <span asp-validation-for="MaxLimit" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="MinLimit" class="control-label">Minimum Limit</label>
+                            <input asp-for="MinLimit" class="form-control" />
+                            <span asp-validation-for="MinLimit" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Kategori</label>
+                            <div id="categoryCheckboxes">
+                                @foreach (var category in ViewBag.Categories)
+                                {
+                                    <div class="form-check">
+                                        <input type="checkbox" id="@("category_" + category.Value)" name="categories" value="@category.Value" class="form-check-input" />
+                                        <label class="form-check-label" for="@("category_" + category.Value)">@category.Text</label>
+                                    </div>
+                                }
+                            </div>
+                            <span asp-validation-for="Categories" class="text-danger"></span>
+                        </div>
+
+                        @section Scripts {
+                            <script>
+                                $(document).ready(function () {
+                                    $("#categoryCheckboxes input[type='checkbox']").change(function () {
+                                        var selectedCategories = [];
+
+                                        $("#categoryCheckboxes input[type='checkbox']:checked").each(function () {
+                                            selectedCategories.push($(this).val());
+                                        });
+
+                                        console.log("Seçilen kategoriler: " + selectedCategories.join(", "));
+                                    });
+                                });
+                            </script>
+                        }
+
+                        <div class="form-group">
+                            <label asp-for="Categories" class="control-label">Yeni Kategori Ekle</label>
+                            <input name="newcategories" class="form-control" />
+                            <span asp-validation-for="Categories" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <input type="submit" value="Oluştur" class="btn btn-success btn-lg" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/jquery-3.6.0.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,363 @@
+﻿@model List<Binel.Models.DonatePost>
+@{
+    Layout = "_Layout1";
+    var keyword = ViewBag.keyword as string;
+    var totalPages = ViewBag.TotalPages as int? ?? 1;
+    int currentPage = ViewBag.CurrentPage != null ? Convert.ToInt32(ViewBag.CurrentPage) : 1;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/feed_styles2.css">
+    <link rel="stylesheet" href="~/css/styles.css">
+    <style>
+        .category-info {
+            text-align: center;
+        }
+
+            .category-info ul {
+                display: inline-block;
+                padding-left: 0;
+                list-style: none;
+                margin: 0;
+            }
+
+            .category-info li {
+                margin-right: 20px;
+                display: inline-block;
+                align-items: center;
+            }
+
+            .category-info .badge {
+                width: 20px;
+                height: 20px;
+                margin-right: 5px;
+                border-radius: 50%;
+            }
+
+        .card-details {
+            max-width: 350px;
+        }
+
+        .btn-customdonate {
+            background-color: #28A745;
+            color: white;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-customdonate:hover {
+                background-color: #218838;
+                color: white;
+            }
+
+        .card {
+            position: relative;
+            padding-bottom: 60px;
+        }
+
+        .publish-date {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .card-title {
+            text-align: center;
+        }
+
+        .donate-title {
+            color: darkred; /* Başlık rengi */
+            transition: color 0.3s ease;
+        }
+
+            .donate-title:hover {
+                color: red; /* Hover durumunda başlık rengi */
+            }
+
+        .organization-name {
+            color: darkred; /* Başlık rengi */
+            transition: color 0.3s ease;
+        }
+
+            .organization-name:hover {
+                color: red; /* Hover durumunda başlık rengi */
+            }
+
+        .page-link {
+            color: darkred; /* Başlık rengi */
+            transition: color 0.3s ease;
+        }
+
+            .page-link:hover {
+                color: red; /* Başlık rengi */
+            }
+
+        .card-container {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        #chatBotIcon {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #007bff;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        #chatBotWindow {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            width: 300px;
+            height: 400px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: scale(0.95);
+        }
+
+            #chatBotWindow.show {
+                display: flex;
+                opacity: 1;
+                transform: scale(1);
+            }
+
+        #chatBotHeader {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        #chatBotBody {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        #chatBotInput {
+            display: flex;
+            border-top: 1px solid #ccc;
+        }
+
+            #chatBotInput input {
+                flex: 1;
+                padding: 10px;
+                border: none;
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+            #chatBotInput button {
+                padding: 10px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-bottom-right-radius: 10px;
+                cursor: pointer;
+            }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="search-container shadow-lg p-3 mb-5 bg-white rounded">
+                    <form method="get" action="/feed/search" class="form-inline justify-content-center">
+                        <input type="text" name="keyword" placeholder="Ne aramak istersin?" class="form-control form-control-lg mr-2" value="@keyword">
+                        <button type="submit" class=" btn search-button-custom btn-lg">
+                            <img src="~/images/search-bar-01.png" alt="Ara" style="width: 27px; height: 27px;">
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-8 text-center ">
+                <!-- Filtreleme Butonları -->
+                <div class="filter-buttons d-inline-block ">
+                    <button class="filter-button_0" data-category-id="5"></button>
+                    <button class="filter-button_1" data-category-id="1"></button>
+                    <button class="filter-button_2" data-category-id="2"></button>
+                    <button class="filter-button_3" data-category-id="3"></button>
+                    <button class="filter-button_4" data-category-id="4"></button>
+                </div>
+            </div>
+            <div class="category-info d-inline-block text-center mx-auto">
+                <ul>
+                    <li><span class="badge" style="background-color: #ff6347;">&nbsp;&nbsp;</span> Eğitim</li>
+                    <li><span class="badge" style="background-color: #ffa500;">&nbsp;&nbsp;</span> Hayvan</li>
+                    <li><span class="badge" style="background-color: #ffd700;">&nbsp;&nbsp;</span> Deprem</li>
+                    <li><span class="badge" style="background-color: #90ee90;">&nbsp;&nbsp;</span> Çocuk</li>
+                    <li><span class="badge" style="background-color: #87ceeb;">&nbsp;&nbsp;</span> Doğa</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feed İçeriği -->
+    <div class="container mt-4" id="content-container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <!-- Feed Gönderileri -->
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var post in Model)
+                    {
+                        <div class="card-container">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="/@post.Organization.OrganizationTitle.ToLower()/donatepost?id=@post.DonateId" class="donate-title">@post.Title</a>
+                                    </h5>
+                                    <a href="/@post.Organization.OrganizationTitle.ToLower()/donatepost?id=@post.DonateId" class="btn btn-customdonate">Bağış Yap</a>
+                                    <p class="card-details">@post.DonateText</p>
+                                    <div class="publish-date">
+                                        <p class="card-details">
+                                            Tarih: @(post.PublishDate.HasValue ? post.PublishDate.Value.ToString("dd/MM/yyyy") : "Tarih bilinmiyor")
+                                        </p>
+                                    </div>
+                                    @if (post.Organization != null)
+                                    {
+                                        <p class="card-details">Organizasyon: <a href="/@post.Organization.OrganizationTitle.ToLower()" class="organization-name">@post.Organization.OrganizationName</a></p>
+                                    }
+                                    <p class="card-details">
+                                        Kategoriler:
+                                        @foreach (var category in post.Categories)
+                                        {
+                                            <span>@category.CategoryName</span>
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>Sonuç bulunamadı.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Sayfa Numaralandırma -->
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        @for (int i = 1; i <= totalPages; i++)
+                        {
+                            <li class="page-item @(i == currentPage ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("Search", new { keyword = keyword, pageNum = i })">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yardım Botu -->
+    <div id="chatBotIcon">
+        💬
+    </div>
+
+    <div id="chatBotWindow">
+        <div id="chatBotHeader">Yardım Botu</div>
+        <div id="chatBotBody"></div>
+        <div id="chatBotInput">
+            <input type="text" placeholder="Mesajınızı yazın..." />
+            <button>Gönder</button>
+        </div>
+    </div>
+
+    <script src="~/js/jquery-3.6.0.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.filter-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    var categoryId = this.getAttribute('data-category-id');
+                    fetch(`/Feed/Filter?filterId=${categoryId}`)
+                        .then(response => response.text())
+                        .then(result => {
+                            document.getElementById('content-container').innerHTML = result;
+                        });
+                });
+            });
+
+            document.getElementById('chatBotIcon').addEventListener('click', function () {
+                var chatBotWindow = document.getElementById('chatBotWindow');
+                if (chatBotWindow.classList.contains('show')) {
+                    chatBotWindow.classList.remove('show');
+                    setTimeout(() => chatBotWindow.style.display = 'none', 500);
+                } else {
+                    chatBotWindow.style.display = 'flex';
+                    setTimeout(() => chatBotWindow.classList.add('show'), 10);
+                }
+            });
+
+            document.querySelector('#chatBotInput button').addEventListener('click', function () {
+                var input = document.querySelector('#chatBotInput input');
+                var message = input.value;
+                if (message) {
+                    var chatBotBody = document.getElementById('chatBotBody');
+                    var userMessage = document.createElement('div');
+                    userMessage.textContent = 'Siz: ' + message;
+                    chatBotBody.appendChild(userMessage);
+                    input.value = '';
+
+                    // Simulate typing effect for bot response
+                    var botMessage = document.createElement('div');
+                    chatBotBody.appendChild(botMessage);
+                    var botResponse = 'Bot: Merhaba! En kısa zaman içerisinde temsilcimiz aktarılacaktır. Beklemek istemezseniz sorunuzu "binel@binel.com" adresine e-posta olarak yollayabilirsiniz.';
+                    var i = 0;
+
+                    function typeWriter() {
+                        if (i < botResponse.length) {
+                            botMessage.textContent += botResponse.charAt(i);
+                            i++;
+                            setTimeout(typeWriter, 50);
+                        }
+                    }
+                    typeWriter();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
